@@ -16,7 +16,8 @@ class MemberServiceTest(
     @Test
     fun registrationTest() {
         val memberRegistrationDto = MemberRegistrationDto(
-                name = "김태민"
+                name = "김태민",
+                password = "1234"
         )
         memberService.registration(memberRegistrationDto)
 

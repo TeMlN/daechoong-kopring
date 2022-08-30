@@ -12,7 +12,8 @@ class MemberServiceImpl(
 
     override fun registration(memberRegistrationDto: MemberRegistrationDto) {
         val member = Member(
-            name = memberRegistrationDto.name
+            name = memberRegistrationDto.name,
+            password = memberRegistrationDto.password
         )
         memberRepository.save(member);
     }
