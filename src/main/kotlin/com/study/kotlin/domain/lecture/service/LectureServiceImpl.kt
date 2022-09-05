@@ -2,6 +2,8 @@ package com.study.kotlin.domain.lecture.service
 
 import com.study.kotlin.domain.lecture.Lecture
 import com.study.kotlin.domain.lecture.dto.LectureRegistrationDto
+import com.study.kotlin.domain.lecture.dto.PriceUpdateDto
+import com.study.kotlin.domain.lecture.dto.TitleUpdateDto
 import com.study.kotlin.domain.lecture.repository.LectureRepository
 import com.study.kotlin.domain.member.repository.MemberRepository
 import org.springframework.stereotype.Service
@@ -22,5 +24,20 @@ class LectureServiceImpl(
             member = loginMember!!,
         ))
 
+    }
+
+    override fun updateLectureTitle(lectureId: Long, titleUpdateDto: TitleUpdateDto) {
+        val findLecture = lectureRepository.findLectureById(lectureId)
+                ?: throw IllegalArgumentException("강의가 존재하지 않습니다.")
+
+        findLecture.updateTitle(titleUpdateDto.title)
+
+    }
+
+    override fun updateLecturePrice(lectureId: Long, priceUpdateDto: PriceUpdateDto) {
+        val findLecture = lectureRepository.findLectureById(lectureId)
+                ?: throw IllegalArgumentException("강의가 존재하지 않습니다.")
+
+        findLecture.updatePrice(priceUpdateDto.price)
     }
 }

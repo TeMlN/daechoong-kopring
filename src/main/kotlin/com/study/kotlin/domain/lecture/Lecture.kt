@@ -25,4 +25,12 @@ class Lecture(
     @JoinColumn(name = "member_id")
     var member: Member,
 
-)
+) {
+    fun updatePrice(price: Int) {
+        this.price = price
+    }
+
+    fun updateTitle(title: String) {
+        this.title = title
+    }
+}
