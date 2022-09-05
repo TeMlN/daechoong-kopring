@@ -1,6 +1,9 @@
 package com.study.kotlin.domain.lecture.service
 
+import com.study.kotlin.domain.lecture.Lecture
 import com.study.kotlin.domain.lecture.dto.LectureRegistrationDto
+import com.study.kotlin.domain.lecture.dto.PriceUpdateDto
+import com.study.kotlin.domain.lecture.dto.TitleUpdateDto
 import com.study.kotlin.domain.lecture.enumType.LectureCategory
 import com.study.kotlin.domain.lecture.repository.LectureRepository
 import com.study.kotlin.domain.member.Member
@@ -20,18 +23,10 @@ class LectureServiceTest(
     @Autowired private val memberRepository: MemberRepository,
 ) {
 
-    @BeforeEach
-    @DisplayName("Test가 실행되기 전 Test에 사용될 유저를 회원가입 시킴")
-    fun registerMember() {
-        memberRepository.save(Member(
-                name = "김태민",
-                password = "1234"
-        ))
-    }
-
     @Test
     @DisplayName("강의가 성공적으로 등록되나요?")
     fun registrationLectureTest() {
+        makeMember()
         val lectureRegistrationDto = LectureRegistrationDto(
                 name = "김태민",
                 password = "1234",
@@ -43,5 +38,47 @@ class LectureServiceTest(
         lectureService.registrationLecture(lectureRegistrationDto)
 
         Assertions.assertEquals(lectureRepository.count(), 1)
+    }
+
+    @Test
+    @DisplayName("강의명 업데이트가 잘 되나요?")
+    fun updateLectureTitleTest() {
+        val lecture = makeLecture("실전!! 코틀린으로 REST API 만들기", 88000, LectureCategory.BACKEND)
+        val oldTitle = lecture.title
+
+        val titleUpdateDto = TitleUpdateDto("실전! Java에서 Kotlin 마이그레이션 하기")
+        lecture.updateTitle(titleUpdateDto.title)
+
+        Assertions.assertNotEquals(oldTitle, lecture.title)
+    }
+
+    @Test
+    @DisplayName("강의비용이 업데이트가 잘 되나요?")
+    fun updateLecturePriceTest() {
+        val lecture = makeLecture("실전!! 코틀린으로 REST API 만들기", 88000, LectureCategory.BACKEND)
+        val oldPrice = lecture.price
+
+        val priceUpdateDto = PriceUpdateDto(120000)
+        lecture.updatePrice(priceUpdateDto.price)
+
+        Assertions.assertNotEquals(oldPrice, lecture.price)
+    }
+
+    @DisplayName("강의를 만들어주는 함수")
+    fun makeLecture(title: String, price: Int, category: LectureCategory): Lecture {
+        return lectureRepository.save(Lecture(
+                title = title,
+                price = price,
+                category = category,
+                member = makeMember()
+        ))
+    }
+
+    @DisplayName("멤버를 만들어주는 함수")
+    fun makeMember(): Member {
+        return memberRepository.save(Member(
+                name = "김태민",
+                password = "1234"
+        ))
     }
 }
