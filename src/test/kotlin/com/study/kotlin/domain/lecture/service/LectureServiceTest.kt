@@ -64,6 +64,7 @@ class LectureServiceTest(
         Assertions.assertNotEquals(oldPrice, lecture.price)
     }
 
+c
     @DisplayName("강의를 만들어주는 함수")
     fun makeLecture(title: String, price: Int, category: LectureCategory): Lecture {
         return lectureRepository.save(Lecture(
@@ -74,6 +75,9 @@ class LectureServiceTest(
         ))
     }
 
+    /**
+     * Is Not Test Case
+     */
     @DisplayName("멤버를 만들어주는 함수")
     fun makeMember(): Member {
         return memberRepository.save(Member(
